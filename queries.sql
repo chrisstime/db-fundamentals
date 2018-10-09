@@ -6,7 +6,7 @@
     Student Number: 
 **/
 
-/* GROUP BY STATEMENTS */
+/* GENERAL SELECT STATEMENTS */
 
 SELECT * FROM accounts;
 /*  Results:
@@ -23,7 +23,7 @@ SELECT * FROM channels;
 
  channel_id | channel_name |              channel_description              | channel_created_at |   acc_id
 ------------+--------------+-----------------------------------------------+--------------------+------------
- ch00001    | chrisstime   | Sometimes I play music. Sometimes I am music. | 2014-09-12         | ac00001
+ ch00001    | chrisstime   | Sometimes I play music. Sometimes I am music. | 2014-09-12         | ac00002
 */
 
 SELECT * FROM playlists;
@@ -34,6 +34,9 @@ SELECT * FROM playlists;
  pl00001     | Best covers ever | Playlist of the best covers ever | ch00001
 */
 
+
+/* INNER JOIN STATEMENTS */
+
 SELECT * FROM accounts a INNER JOIN invoices i on a.acc_id = i.acc_id;
 /*   Results:
 
@@ -43,11 +46,14 @@ SELECT * FROM accounts a INNER JOIN invoices i on a.acc_id = i.acc_id;
  ac00002    | sad@sadders.com | bop@sadders.com    | 04111111116        | 1980-12-16 | female     | ndsfoih4thslakdhg39rgd9gsid9 | manager    |                | in00002    | 2015-05-15     | 2015-04-15     | 2015-05-14   | me00002    | ac00002
  ac00002    | sad@sadders.com | bop@sadders.com    | 04111111116        | 1980-12-16 | female     | ndsfoih4thslakdhg39rgd9gsid9 | manager    |                | in00003    | 2015-06-15     | 2015-05-15     | 2015-06-14   | me00002    | ac00002
  ac00002    | sad@sadders.com | bop@sadders.com    | 04111111116        | 1980-12-16 | female     | ndsfoih4thslakdhg39rgd9gsid9 | manager    |                | in00004    | 2015-03-15     | 2015-06-15     | 2015-07-14   | me00002    | ac00002
- ac00001    | bob@bobbers.com |                    | 04111111115        | 2000-06-11 | male       | dvlatoeupofjzdjkvc#R3efijaej | manager    |                | in00005    | 2017-03-10     | 2017-03-23     | 2017-04-09   | me00003    | ac00001
- ac00001    | bob@bobbers.com |                    | 04111111115        | 2000-06-11 | male       | dvlatoeupofjzdjkvc#R3efijaej | manager    |                | in00006    | 2017-05-10     | 2017-04-10     | 2017-05-09   | me00004    | ac00001
- ac00001    | bob@bobbers.com |                    | 04111111115        | 2000-06-11 | male       | dvlatoeupofjzdjkvc#R3efijaej | manager    |                | in00007    | 2017-06-10     | 2017-05-10     | 2017-06-09   | me00004    | ac00001
- ac00001    | bob@bobbers.com |                    | 04111111115        | 2000-06-11 | male       | dvlatoeupofjzdjkvc#R3efijaej | manager    |                | in00008    | 2017-07-10     | 2017-06-23     | 2017-07-09   | me00004    | ac00001
+ ac00001    | bob@bobbers.com |                    | 04111111115        | 2000-06-11 | male       | dvlatoeupofjzdjkvc#R3efijaej | manager    |                | in00005    | 2017-03-10     | 2017-03-09     | 2017-04-23   | me00003    | ac00001
+ ac00001    | bob@bobbers.com |                    | 04111111115        | 2000-06-11 | male       | dvlatoeupofjzdjkvc#R3efijaej | manager    |                | in00006    | 2017-05-23     | 2017-04-23     | 2017-05-22   | me00004    | ac00001
+ ac00001    | bob@bobbers.com |                    | 04111111115        | 2000-06-11 | male       | dvlatoeupofjzdjkvc#R3efijaej | manager    |                | in00007    | 2017-06-23     | 2017-05-23     | 2017-06-22   | me00004    | ac00001
+ ac00001    | bob@bobbers.com |                    | 04111111115        | 2000-06-11 | male       | dvlatoeupofjzdjkvc#R3efijaej | manager    |                | in00008    | 2017-07-23     | 2017-06-23     | 2017-07-22   | me00004    | ac00001
 */
+
+
+/* GROUP BY STATEMENTS */
 
 SELECT acc_id, COUNT(inv_no) FROM invoices GROUP BY acc_id;
 /*   Results:
@@ -56,4 +62,22 @@ SELECT acc_id, COUNT(inv_no) FROM invoices GROUP BY acc_id;
 ------------+-------
  ac00001    |     4
  ac00002    |     4
+*/
+
+/* SUBQUERY STATEMENTS */
+
+/* Find the MOST RECENT membership type name, price and cycle of the account who owns/uploaded the "Baby Shark Accapella Cover" */
+SELECT mtype_name, mtype_price, mtype_cycle_duration FROM membership_types WHERE mtype_id = (
+    SELECT mtype_id FROM memberships WHERE acc_id = (
+        SELECT acc_id FROM channels WHERE channel_id = (
+            SELECT channel_id FROM videos WHERE vid_title = 'Baby Shark Accapella Cover'
+            )
+        )
+    ORDER BY mem_start_at DESC LIMIT 1
+);
+/*   Results:
+
+    mtype_name     | mtype_price | mtype_cycle_duration
+-------------------+-------------+----------------------
+ Single Membership |       14.99 | monthly
 */
