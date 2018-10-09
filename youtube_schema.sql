@@ -4,6 +4,16 @@
     Student Number: 
 **/
 
+DROP TABLE accounts;
+DROP TABLE channels;
+DROP TABLE memberships;
+DROP TABLE membership_types;
+DROP TABLE invoices;
+DROP TABLE videos;
+DROP TABLE playlists;
+DROP TABLE plalist_items;
+
+
 CREATE TABLE Accounts(
     acc_id                  char(10)            NOT NULL,
     acc_email               varchar(30)         NOT NULL,
