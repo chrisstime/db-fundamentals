@@ -59,11 +59,14 @@ CREATE TABLE playlist_items (
     vid_id                    varchar(10)         NOT NULL,
     CONSTRAINT playlist_items_pk PRIMARY KEY (playlist_id, vid_id)
 );
+/* We are assuming here that we only provide the cycle duration i.e. monthly, weekly etc. in string format
+   and the actual membership timing renewal logic is done on the application end of the service.
+ */
 CREATE TABLE membership_types (
     mtype_id              char(10)         NOT NULL,
-    mtype_name            varchar(20)      NOT NULL,
+    mtype_name            varchar(25)      NOT NULL,
     mtype_price           decimal(5,2)     NOT NULL,
-    mype_cycle_duration   varchar(10)      NOT NULL,
+    mype_cycle_duration   varchar(15)      NOT NULL,
     mtype_description     varchar(50),
     CONSTRAINT membership_types_pk PRIMARY KEY (mtype_id)
 );
@@ -76,6 +79,7 @@ CREATE TABLE memberships (
     CONSTRAINT memberships_fk1 FOREIGN KEY (mtype_id) REFERENCES membership_types (mtype_id),
     CONSTRAINT memberships_fk2 FOREIGN KEY (acc_id) REFERENCES accounts (acc_id)
 );
+/* This includes payment types which has been ommitted from this schema */
 CREATE TABLE invoices (
     inv_no               char(10)         NOT NULL,
     inv_issue_date       date             NOT NULL,
@@ -97,7 +101,7 @@ INSERT INTO accounts (acc_id, acc_email, acc_recovery_phone, acc_dob, acc_gender
     VALUES ('ac00003', 'happy@hoppers.com', '04111111117', '11-Feb-2010', 'male', '23424cref3ewr323r2fwee32dewf', 'child', 'ac00001');
 
 INSERT INTO channels (channel_id, channel_name, channel_description, channel_created_at, acc_id)
-    VALUES ('ch00001', 'chrisstime', 'Sometimes I play music. Sometimes I am music.', '12-Sep-2015', 'ac00001');
+    VALUES ('ch00001', 'chrisstime', 'Sometimes I play music. Sometimes I am music.', '12-Sep-2014', 'ac00001');
 
 INSERT INTO videos (vid_id, vid_title, vid_description, vid_message, vid_privacy_setting, channel_id)
     VALUES ('v00001', 'Baby Shark Accapella Cover', 'I really put a lot of effort please like', 'Please watch', 'Public', 'ch00001');
@@ -106,3 +110,21 @@ INSERT INTO playlists (playlist_id, playlist_title, playlist_description, channe
     VALUES ('pl00001', 'Best covers ever', 'Playlist of the best covers ever', 'ch00001');
 INSERT INTO playlist_items (playlist_item_position, playlist_id, vid_id)
     VALUES (1, 'pl00001', 'v00001');
+
+INSERT INTO membership_types VALUES ('mt00001', 'Single Membership', 14.99, 'monthly', '');
+INSERT INTO membership_types VALUES ('mt00002', 'Family Membership', 17.99, 'monthly', 'Enjoy with no ads with your entire family!');
+INSERT INTO membership_types VALUES ('mt00003', 'Trial Membership', 0.00, 'fornight', 'Free premium trial for 2 weeks.');
+
+INSERT INTO memberships VALUES ('me00001', '31-Mar-2015', 'mt00003', 'ac00002');
+INSERT INTO memberships VALUES ('me00002', '15-Apr-2015', 'mt00001', 'ac00002');
+INSERT INTO memberships VALUES ('me00003', '23-Mar-2017', 'mt00003', 'ac00001');
+INSERT INTO memberships VALUES ('me00004', '9-Mar-2017', 'mt00002', 'ac00001');
+
+INSERT INTO invoices VALUES ('in00001', '15-Apr-2015', '31-Mar-2015', '14-Apr-2015', 'me00001', 'ac00002');
+INSERT INTO invoices VALUES ('in00002', '15-May-2015', '15-Apr-2015', '14-May-2015', 'me00002', 'ac00002');
+INSERT INTO invoices VALUES ('in00003', '15-Jun-2015', '15-May-2015', '14-Jun-2015', 'me00002', 'ac00002');
+INSERT INTO invoices VALUES ('in00004', '15-Mar-2015', '15-Jun-2015', '14-Jul-2015', 'me00002', 'ac00002');
+INSERT INTO invoices VALUES ('in00005', '10-Mar-2017', '23-Mar-2017', '9-Apr-2017', 'me00003', 'ac00001');
+INSERT INTO invoices VALUES ('in00006', '10-May-2017', '10-Apr-2017', '9-May-2017', 'me00004', 'ac00001');
+INSERT INTO invoices VALUES ('in00007', '10-Jun-2017', '10-May-2017', '9-Jun-2017', 'me00004', 'ac00001');
+INSERT INTO invoices VALUES ('in00008', '10-Jul-2017', '23-Jun-2017', '9-Jul-2017', 'me00004', 'ac00001');
