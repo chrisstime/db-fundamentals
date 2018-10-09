@@ -39,6 +39,7 @@ CREATE TABLE playlists (
     playlist_id             varchar(10)        NOT NULL,
     playlist_title          varchar(30)        NOT NULL,
     playlist_description    varchar(255),
+    channel_id              char(10)           NOT NULL,   
     CONSTRAINT playlist_pk PRIMARY KEY (playlist_id),
     CONSTRAINT playlist_fk1 FOREIGN KEY (channel_id) REFERENCES channels (channel_id)
 );
@@ -48,6 +49,7 @@ CREATE TABLE videos (
   vid_description           varchar(255),
   vid_message               varchar(255),
   vid_privacy_setting       varchar(255)       NOT NULL,
+  channel_id                char(10)           NOT NULL,
   CONSTRAINT videos_pk PRIMARY KEY (vid_id),
   CONSTRAINT videos_fk1 FOREIGN KEY (channel_id) REFERENCES channels (channel_id)
 );
