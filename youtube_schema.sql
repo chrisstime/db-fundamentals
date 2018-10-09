@@ -24,30 +24,30 @@ CREATE TABLE accounts(
     acc_password            varchar(30)         NOT NULL,
     acc_type                char(10)            NOT NULL,
     acc_manager_id          char(10), 
-    PRIMARY KEY (acc_id)
+    CONSTRAINT accounts_pk PRIMARY KEY (acc_id)
 );
 CREATE TABLE channels (
-    channel_id            char(10)            NOT NULL,
-    channel_name          varchar(25)         NOT NULL,
+    channel_id            char(10)             NOT NULL,
+    channel_name          varchar(25)          NOT NULL,
     channel_description   varchar(75),
-    channel_created_at    date                NOT NULL,
-    acc_id                char(10)            NOT NULL,
-    CONSTRAINT channels_fk PRIMARY KEY (channel_id),
-    CONSTRAINT channels_fk FOREIGN KEY (acc_id) REFERENCES accounts(acc_id)
-)
+    channel_created_at    date                 NOT NULL,
+    acc_id                char(10)             NOT NULL,
+    CONSTRAINT channels_pk PRIMARY KEY (channel_id),
+    CONSTRAINT channels_fk1 FOREIGN KEY (acc_id) REFERENCES accounts (acc_id)
+);
 CREATE TABLE playlists (
-    playlist_id             varchar(10)         NOT NULL,
-    playlist_title          varchar(30),
+    playlist_id             varchar(10)        NOT NULL,
+    playlist_title          varchar(30)        NOT NULL,
     playlist_description    varchar(255),
     CONSTRAINT playlist_pk PRIMARY KEY (playlist_id),
     CONSTRAINT playlist_fk1 FOREIGN KEY (channel_id) REFERENCES channels (channel_id)
 );
 CREATE TABLE videos (
-  vid_id                    varchar(10),
-  vid_title                 varchar(20),
+  vid_id                    varchar(10)        NOT NULL,
+  vid_title                 varchar(20)        NOT NULL,
   vid_description           varchar(255),
   vid_message               varchar(255),
-  vid_privacy_setting       varchar(255),
+  vid_privacy_setting       varchar(255)       NOT NULL,
   CONSTRAINT videos_pk PRIMARY KEY (vid_id),
   CONSTRAINT videos_fk1 FOREIGN KEY (channel_id) REFERENCES channels (channel_id)
 );
