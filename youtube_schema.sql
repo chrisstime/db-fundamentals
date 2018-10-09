@@ -23,7 +23,7 @@ CREATE TABLE accounts(
     acc_gender              char(10)            NOT NULL,
     acc_password            varchar(30)         NOT NULL,
     acc_type                char(10)            NOT NULL,
-    acc_manager_id          char(10), 
+    acc_manager_id          char(10),  
     CONSTRAINT accounts_pk PRIMARY KEY (acc_id)
 );
 CREATE TABLE channels (
@@ -44,20 +44,48 @@ CREATE TABLE playlists (
     CONSTRAINT playlist_fk1 FOREIGN KEY (channel_id) REFERENCES channels (channel_id)
 );
 CREATE TABLE videos (
-  vid_id                    varchar(10)        NOT NULL,
-  vid_title                 varchar(20)        NOT NULL,
-  vid_description           varchar(255),
-  vid_message               varchar(255),
-  vid_privacy_setting       varchar(255)       NOT NULL,
-  channel_id                char(10)           NOT NULL,
-  CONSTRAINT videos_pk PRIMARY KEY (vid_id),
-  CONSTRAINT videos_fk1 FOREIGN KEY (channel_id) REFERENCES channels (channel_id)
+    vid_id                    varchar(10)        NOT NULL,
+    vid_title                 varchar(30)        NOT NULL,
+    vid_description           varchar(255),
+    vid_message               varchar(255),
+    vid_privacy_setting       varchar(255)       NOT NULL,
+    channel_id                char(10)           NOT NULL,
+    CONSTRAINT videos_pk PRIMARY KEY (vid_id),
+    CONSTRAINT videos_fk1 FOREIGN KEY (channel_id) REFERENCES channels (channel_id)
 );
 CREATE TABLE playlist_items (
-  playlist_item_position    int                 NOT NULL,
-  playlist_id               varchar(10)         NOT NULL,
-  vid_id                    varchar(10)         NOT NULL,
-  CONSTRAINT playlist_items_pk PRIMARY KEY (playlist_id, vid_id)
+    playlist_item_position    int                 NOT NULL,
+    playlist_id               varchar(10)         NOT NULL,
+    vid_id                    varchar(10)         NOT NULL,
+    CONSTRAINT playlist_items_pk PRIMARY KEY (playlist_id, vid_id)
+);
+CREATE TABLE membership_types (
+    mtype_id              char(10)         NOT NULL,
+    mtype_name            varchar(20)      NOT NULL,
+    mtype_price           decimal(5,2)     NOT NULL,
+    mype_cycle_duration   varchar(10)      NOT NULL,
+    mtype_description     varchar(50),
+    CONSTRAINT membership_types_pk PRIMARY KEY (mtype_id)
+);
+CREATE TABLE memberships (
+    mem_id              char(10)        NOT NULL,
+    mem_start_at        date            NOT NULL,
+    mtype_id            char(10)        NOT NULL,
+    acc_id              char(10)        NOT NULL,
+    CONSTRAINT memberships_pk PRIMARY KEY (mem_id),
+    CONSTRAINT memberships_fk1 FOREIGN KEY (mtype_id) REFERENCES membership_types (mtype_id),
+    CONSTRAINT memberships_fk2 FOREIGN KEY (acc_id) REFERENCES accounts (acc_id)
+);
+CREATE TABLE invoices (
+    inv_no               char(10)         NOT NULL,
+    inv_issue_date       date             NOT NULL,
+    inv_start_date       date             NOT NULL,
+    inv_end_date         date             NOT NULL,
+    mem_id               char(10)         NOT NULL,
+    acc_id               char(10)         NOT NULL,
+    CONSTRAINT invoices_pk PRIMARY KEY (inv_no),
+    CONSTRAINT invoices_fk1 FOREIGN KEY (mem_id) REFERENCES memberships (mem_id),
+    CONSTRAINT invoices_fk2 FOREIGN KEY (acc_id) REFERENCES accounts (acc_id)
 );
 
 /* Insert dummy data */
@@ -67,12 +95,14 @@ INSERT INTO accounts (acc_id, acc_email, acc_recovery_phone, acc_recovery_email,
     VALUES ('ac00002', 'sad@sadders.com', '04111111116', 'bop@sadders.com', '16-Dec-1980', 'female', 'ndsfoih4thslakdhg39rgd9gsid9', 'manager');
 INSERT INTO accounts (acc_id, acc_email, acc_recovery_phone, acc_dob, acc_gender, acc_password, acc_type, acc_manager_id) 
     VALUES ('ac00003', 'happy@hoppers.com', '04111111117', '11-Feb-2010', 'male', '23424cref3ewr323r2fwee32dewf', 'child', 'ac00001');
+
 INSERT INTO channels (channel_id, channel_name, channel_description, channel_created_at, acc_id)
     VALUES ('ch00001', 'chrisstime', 'Sometimes I play music. Sometimes I am music.', '12-Sep-2015', 'ac00001');
+
 INSERT INTO videos (vid_id, vid_title, vid_description, vid_message, vid_privacy_setting, channel_id)
     VALUES ('v00001', 'Baby Shark Accapella Cover', 'I really put a lot of effort please like', 'Please watch', 'Public', 'ch00001');
+
 INSERT INTO playlists (playlist_id, playlist_title, playlist_description, channel_id)
     VALUES ('pl00001', 'Best covers ever', 'Playlist of the best covers ever', 'ch00001');
 INSERT INTO playlist_items (playlist_item_position, playlist_id, vid_id)
     VALUES (1, 'pl00001', 'v00001');
-
