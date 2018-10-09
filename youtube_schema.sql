@@ -66,7 +66,7 @@ CREATE TABLE membership_types (
     mtype_id              char(10)         NOT NULL,
     mtype_name            varchar(25)      NOT NULL,
     mtype_price           decimal(5,2)     NOT NULL,
-    mype_cycle_duration   varchar(15)      NOT NULL,
+    mtype_cycle_duration   varchar(15)      NOT NULL,
     mtype_description     varchar(50),
     CONSTRAINT membership_types_pk PRIMARY KEY (mtype_id)
 );
@@ -117,14 +117,15 @@ INSERT INTO membership_types VALUES ('mt00003', 'Trial Membership', 0.00, 'forni
 
 INSERT INTO memberships VALUES ('me00001', '31-Mar-2015', 'mt00003', 'ac00002');
 INSERT INTO memberships VALUES ('me00002', '15-Apr-2015', 'mt00001', 'ac00002');
-INSERT INTO memberships VALUES ('me00003', '23-Mar-2017', 'mt00003', 'ac00001');
-INSERT INTO memberships VALUES ('me00004', '9-Mar-2017', 'mt00002', 'ac00001');
+INSERT INTO memberships VALUES ('me00003', '9-Mar-2017', 'mt00003', 'ac00001');
+INSERT INTO memberships VALUES ('me00004', '23-Mar-2017', 'mt00002', 'ac00001');
 
 INSERT INTO invoices VALUES ('in00001', '15-Apr-2015', '31-Mar-2015', '14-Apr-2015', 'me00001', 'ac00002');
 INSERT INTO invoices VALUES ('in00002', '15-May-2015', '15-Apr-2015', '14-May-2015', 'me00002', 'ac00002');
 INSERT INTO invoices VALUES ('in00003', '15-Jun-2015', '15-May-2015', '14-Jun-2015', 'me00002', 'ac00002');
 INSERT INTO invoices VALUES ('in00004', '15-Mar-2015', '15-Jun-2015', '14-Jul-2015', 'me00002', 'ac00002');
-INSERT INTO invoices VALUES ('in00005', '10-Mar-2017', '23-Mar-2017', '9-Apr-2017', 'me00003', 'ac00001');
-INSERT INTO invoices VALUES ('in00006', '10-May-2017', '10-Apr-2017', '9-May-2017', 'me00004', 'ac00001');
-INSERT INTO invoices VALUES ('in00007', '10-Jun-2017', '10-May-2017', '9-Jun-2017', 'me00004', 'ac00001');
-INSERT INTO invoices VALUES ('in00008', '10-Jul-2017', '23-Jun-2017', '9-Jul-2017', 'me00004', 'ac00001');
+INSERT INTO invoices VALUES ('in00005', '10-Mar-2017', '9-Mar-2017', '23-Apr-2017', 'me00003', 'ac00001');
+INSERT INTO invoices VALUES ('in00006', '23-May-2017', '23-Apr-2017', '22-May-2017', 'me00004', 'ac00001');
+INSERT INTO invoices VALUES ('in00007', '23-Jun-2017', '23-May-2017', '22-Jun-2017', 'me00004', 'ac00001');
+INSERT INTO invoices VALUES ('in00008', '23-Jul-2017', '23-Jun-2017', '22-Jul-2017', 'me00004', 'ac00001');
+
