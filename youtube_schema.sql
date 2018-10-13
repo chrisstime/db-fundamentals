@@ -1,9 +1,3 @@
-/** Author: Christine Vinaviles
-    Student Number: 11986282
-    Author: John Pham
-    Student Number: 12061471
-**/
-
 DROP TABLE accounts         CASCADE;
 DROP TABLE channels         CASCADE;
 DROP TABLE memberships      CASCADE;
