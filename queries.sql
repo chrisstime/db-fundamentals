@@ -1,9 +1,3 @@
-/** Author: Christine Vinaviles
-    Student Number: 11986282
-    Author: John Pham
-    Student Number: 12061471
-**/
-
 /* GENERAL SELECT STATEMENTS */
 
 /* Get all the columns and data that are in accounts */
